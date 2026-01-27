@@ -1,0 +1,40 @@
+/* Base Body Styles */
+body {
+    background-color: #FDFDF5;
+    color: #013220;
+    font-family: 'Inter', sans-serif;
+}
+
+/* Typography Overrides */
+/* Applying Playfair Display to specific headers and classes */
+h1, h2, h3, h4, h5, h6, .font-serif {
+    font-family: 'Playfair Display', serif;
+}
+
+/* Custom Scrollbar Styling */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #F5F5DC;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #D4AF37; /* Luban Gold */
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #b5952f;
+}
+
+/* Fade In Animation Utility */
+.fade-in {
+    animation: fadeIn 0.5s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
