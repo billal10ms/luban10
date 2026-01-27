@@ -414,7 +414,7 @@ function renderFooter() {
             <div>
                 <h4 class="font-serif font-bold mb-6 text-lg">Contact Us</h4>
                 <div class="space-y-4 text-gray-400 text-sm">
-                    <div class="flex items-center gap-3"><i data-lucide="mail" class="w-5 h-5 text-luban-gold"></i><span>contact@lubanperfume.com</span></div>
+                    <div class="flex items-center gap-3"><i data-lucide="mail" class="w-5 h-5 text-luban-gold"></i><span>lubanfragrance@gmail.com</span></div>
                     <div class="mt-6"><p class="text-xs text-gray-500 mb-1">Call Us 11 AM - 7 PM</p><a href="tel:)01935322213" class="text-2xl font-serif text-white font-bold block hover:text-luban-gold">01-93-53-222-13</a></div>
                     <button class="bg-green-700 hover:bg-green-600 text-white px-6 py-2 rounded-full flex items-center gap-2 mt-4 w-fit text-sm font-bold"><i data-lucide="phone" class="w-4 h-4"></i> WhatsApp Us</button>
                 </div>
