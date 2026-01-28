@@ -279,7 +279,7 @@
             background: var(--gold-primary);
             top: -4px;
             left: 50%;
-            transform: translateX(-50%) rotate(45deg);
+            transform: translateX(-50) rotate(45deg);
         }
 
         .product-grid {
@@ -412,6 +412,8 @@
         }
 
         .contact-item span { color: var(--text-muted); letter-spacing: 1px; }
+        .contact-item a { color: var(--text-muted); text-decoration: none; transition: var(--transition); }
+        .contact-item a:hover { color: var(--gold-primary); }
 
         input, textarea {
             width: 100%;
@@ -440,6 +442,24 @@
             font-size: 0.7rem;
             letter-spacing: 4px;
             text-transform: uppercase;
+        }
+
+        .footer-socials {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .footer-socials a {
+            color: var(--gold-primary);
+            transition: var(--transition);
+            opacity: 0.7;
+        }
+
+        .footer-socials a:hover {
+            opacity: 1;
+            transform: translateY(-3px);
         }
 
         /* Notifications */
@@ -525,7 +545,8 @@
                 <h2 style="margin-left: 0;">Our Legacy</h2>
                 <div style="margin-left: 0;"></div>
             </div>
-            <p>At Luban Fragrance, quality is our obsession. We source the best ingredients to ensure our Fragrances are long-lasting and sophisticated, offering a true luxury experience at an unbeatable price. Why pay more for the name when you can have the scent?</p>        </div>
+            <p>At Luban Fragrance, quality is our obsession. We source the best ingredients to ensure our Fragrances are long-lasting and sophisticated, offering a true luxury experience at an unbeatable price. Why pay more for the name when you can have the scent?</p>
+        </div>
     </section>
 
     <section id="contact">
@@ -548,6 +569,15 @@
                     <i data-lucide="mail" size="20" color="#d4af37"></i>
                     <span>lubanfragrance@gmail.com</span>
                 </div>
+                <!-- Social Media Links in Contact -->
+                <div class="contact-item">
+                    <i data-lucide="facebook" size="20" color="#d4af37"></i>
+                    <a href="https://www.facebook.com/people/Luban-Fragrance/61586484638332/?sk=directory_contact_info" target="_blank">Luban Fragrance</a>
+                </div>
+                <div class="contact-item">
+                    <i data-lucide="instagram" size="20" color="#d4af37"></i>
+                    <a href="https://www.instagram.com/lubanfragrance/" target="_blank">@lubanfragrance</a>
+                </div>
                 <div class="contact-item" style="margin-top: 3rem; opacity: 0.7;">
                     <i data-lucide="clock" size="20" color="#d4af37"></i>
                     <span>Sat - Fri: 12am - 12pm</span>
@@ -563,7 +593,15 @@
     </section>
 
     <footer>
-        <p>&copy; © 2026 Luban Fragrance. Handcrafted for you. | Refined Quality in Every Drop.</p>
+        <div class="footer-socials">
+            <a href="https://www.facebook.com/people/Luban-Fragrance/61586484638332/?sk=directory_contact_info" target="_blank" title="Facebook">
+                <i data-lucide="facebook"></i>
+            </a>
+            <a href="https://www.instagram.com/lubanfragrance/" target="_blank" title="Instagram">
+                <i data-lucide="instagram"></i>
+            </a>
+        </div>
+        <p>&copy; 2026 Luban Fragrance. Handcrafted for you. | Refined Quality in Every Drop.</p>
     </footer>
 
     <div id="notification">Added to Collection</div>
