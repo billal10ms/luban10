@@ -116,7 +116,6 @@
         .nav-links a:hover { color: var(--gold-primary); }
         .nav-links a:hover::after { width: 100%; }
 
-        /* Icon Actions Styling */
         .nav-actions {
             display: flex;
             align-items: center;
@@ -295,17 +294,6 @@
             position: relative;
         }
 
-        .section-title div::after {
-            content: '';
-            position: absolute;
-            width: 8px;
-            height: 8px;
-            background: var(--gold-primary);
-            top: -4px;
-            left: 50%;
-            transform: translateX(-50) rotate(45deg);
-        }
-
         .product-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -330,7 +318,7 @@
 
         .product-image-container {
             width: 100%;
-            height: 420px;
+            height: 380px;
             overflow: hidden;
             background: #000;
             position: relative;
@@ -350,32 +338,44 @@
         }
 
         .product-info {
-            padding: 2.5rem;
+            padding: 2rem;
             text-align: center;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
         }
 
         .product-card h3 {
-            font-size: 1.2rem;
-            margin-bottom: 1rem;
-            letter-spacing: 3px;
+            font-size: 1.1rem;
+            margin-bottom: 0.8rem;
+            letter-spacing: 2px;
             color: var(--gold-primary);
             text-transform: uppercase;
         }
 
         .product-card p {
             color: var(--text-muted);
-            margin-bottom: 2rem;
-            font-size: 0.9rem;
+            margin-bottom: 1.5rem;
+            font-size: 0.85rem;
             font-weight: 300;
-            min-height: 3em;
+            min-height: 4em;
+        }
+
+        .vibe-text {
+            display: block;
+            font-style: italic;
+            margin-bottom: 1.5rem;
+            font-size: 0.8rem;
+            color: var(--gold-light);
+            opacity: 0.8;
         }
 
         .price {
-            font-size: 1.4rem;
+            font-size: 1.2rem;
             color: var(--text-white);
             font-weight: 200;
-            display: block;
-            margin-bottom: 2rem;
+            margin-top: auto;
+            margin-bottom: 1.5rem;
             letter-spacing: 1px;
         }
 
@@ -389,11 +389,7 @@
             position: relative;
         }
 
-        .about-image {
-            flex: 0.8;
-            position: relative;
-        }
-
+        .about-image { flex: 0.8; position: relative; }
         .about-image img {
             width: 100%;
             max-width: 320px;
@@ -435,10 +431,6 @@
             margin-bottom: 2.5rem;
         }
 
-        .contact-item span { color: var(--text-muted); letter-spacing: 1px; }
-        .contact-item a { color: var(--text-muted); text-decoration: none; transition: var(--transition); }
-        .contact-item a:hover { color: var(--gold-primary); }
-
         input, textarea {
             width: 100%;
             padding: 1.2rem;
@@ -448,13 +440,6 @@
             outline: none;
             transition: var(--transition);
             margin-bottom: 1.5rem;
-            font-size: 0.9rem;
-        }
-
-        input:focus, textarea:focus {
-            border-color: var(--gold-primary);
-            background: rgba(255, 255, 255, 0.06);
-            box-shadow: 0 0 15px rgba(212, 175, 55, 0.1);
         }
 
         /* Footer */
@@ -475,16 +460,7 @@
             margin-bottom: 2rem;
         }
 
-        .footer-socials a {
-            color: var(--gold-primary);
-            transition: var(--transition);
-            opacity: 0.7;
-        }
-
-        .footer-socials a:hover {
-            opacity: 1;
-            transform: translateY(-3px);
-        }
+        .footer-socials a { color: var(--gold-primary); opacity: 0.7; }
 
         /* Notifications */
         #notification {
@@ -506,7 +482,6 @@
 
         #notification.show { transform: translateX(0); }
 
-        /* Responsive */
         @media (max-width: 1024px) {
             #about { flex-direction: column; text-align: center; gap: 4rem; }
             .nav-links { gap: 1.5rem; }
@@ -514,11 +489,7 @@
 
         @media (max-width: 768px) {
             .nav-links { display: none; }
-            nav { padding: 1rem 5%; }
             .contact-container { padding: 2rem; gap: 3rem; }
-            #shop { padding: 5rem 5%; }
-            .section-title h2 { font-size: 1.8rem; }
-            .nav-actions { gap: 1rem; }
         }
     </style>
 </head>
@@ -536,7 +507,6 @@
             <li><a href="#contact">Contact</a></li>
         </ul>
         
-        <!-- Social Icons Added & Aligned in Navbar -->
         <div class="nav-actions">
             <a href="https://www.facebook.com/people/Luban-Fragrance/61586484638332/" target="_blank" class="nav-icon-link" title="Facebook">
                 <i data-lucide="facebook" stroke-width="1.5"></i>
@@ -563,11 +533,11 @@
 
     <section id="shop">
         <div class="section-title">
-            <h2>Our Signatures</h2>
+            <h2>The Collection</h2>
             <div></div>
         </div>
         <div class="product-grid" id="product-list">
-            <!-- Injected by JS -->
+            <!-- Products Injected by JS -->
         </div>
     </section>
 
@@ -604,18 +574,6 @@
                     <i data-lucide="mail" size="20" color="#d4af37"></i>
                     <span>lubanfragrance@gmail.com</span>
                 </div>
-                <div class="contact-item">
-                    <i data-lucide="facebook" size="20" color="#d4af37"></i>
-                    <a href="https://www.facebook.com/people/Luban-Fragrance/61586484638332/" target="_blank">Luban Fragrance</a>
-                </div>
-                <div class="contact-item">
-                    <i data-lucide="instagram" size="20" color="#d4af37"></i>
-                    <a href="https://www.instagram.com/lubanfragrance/" target="_blank">@lubanfragrance</a>
-                </div>
-                <div class="contact-item" style="margin-top: 3rem; opacity: 0.7;">
-                    <i data-lucide="clock" size="20" color="#d4af37"></i>
-                    <span>Sat - Fri: 12am - 12pm</span>
-                </div>
             </div>
             <form id="contact-form" onsubmit="handleContact(event)">
                 <input type="text" placeholder="Full Name" required>
@@ -628,75 +586,120 @@
 
     <footer>
         <div class="footer-socials">
-            <a href="https://www.facebook.com/people/Luban-Fragrance/61586484638332/" target="_blank" title="Facebook">
-                <i data-lucide="facebook"></i>
-            </a>
-            <a href="https://www.instagram.com/lubanfragrance/" target="_blank" title="Instagram">
-                <i data-lucide="instagram"></i>
-            </a>
+            <a href="#" target="_blank"><i data-lucide="facebook"></i></a>
+            <a href="#" target="_blank"><i data-lucide="instagram"></i></a>
         </div>
-        <p>&copy; 2026 Luban Fragrance. Handcrafted for you. | Refined Quality in Every Drop.</p>
+        <p>&copy; 2026 Luban Fragrance. | Refined Quality in Every Drop.</p>
     </footer>
 
     <div id="notification">Added to Collection</div>
 
     <script>
-        // Initialize Lucide icons
         lucide.createIcons();
 
-        // Product Data
         const products = [
             { 
-                id: 1, 
-                name: "Omani Gold", 
-                price: "165.00", 
-                desc: "Pure Hojari frankincense with silver smoke and cedar.",
-                img: "https://images.unsplash.com/photo-1541643600914-78b084683601?auto=format&fit=crop&q=80&w=800" 
+                name: "Ehsas Al Arabia", 
+                price: "175.00", 
+                desc: "Scent Profile: Oud, Rose, and Amber",
+                vibe: "Exotic, luxurious, and deeply Middle Eastern.",
+                img: "https://images.unsplash.com/photo-1547887538-e3a2f32cb1cc?auto=format&fit=crop&q=80&w=800" 
             },
             { 
-                id: 2, 
-                name: "Royal Rose", 
-                price: "140.00", 
-                desc: "Taif rose petals distilled with white Luban resin.",
-                img: "https://images.unsplash.com/photo-1594035910387-fea47794261f?auto=format&fit=crop&q=80&w=800" 
+                name: "Vampire Blood", 
+                price: "155.00", 
+                desc: "Scent Profile: Red Berries, Night-Blooming Jasmine, and Plum",
+                vibe: "Dark, sweet, and gothic.",
+                img: "https://images.unsplash.com/photo-1557170334-a7c3a4e2407c?auto=format&fit=crop&q=80&w=800" 
             },
             { 
-                id: 3, 
-                name: "Midnight Oasis", 
-                price: "185.00", 
-                desc: "Deep black amber, oud, and spicy frankincense.",
-                img: "https://images.unsplash.com/photo-1592945403244-b3fbafd7f539?auto=format&fit=crop&q=80&w=800" 
+                name: "CK One Inspired", 
+                price: "95.00", 
+                desc: "Scent Profile: Green Tea, Papaya, and Bergamot",
+                vibe: "The ultimate clean, citrusy, and gender-neutral classic.",
+                img: "https://images.unsplash.com/photo-1523293182086-7651a899d37f?auto=format&fit=crop&q=80&w=800" 
             },
             { 
-                id: 4, 
-                name: "Dhofar Mist", 
-                price: "125.00", 
-                desc: "Light floral notes with a crisp frankincense finish.",
-                img: "https://images.unsplash.com/photo-1563170351-be82bc888aa4?auto=format&fit=crop&q=80&w=800" 
+                name: "Scandal", 
+                price: "145.00", 
+                desc: "Scent Profile: Honey, Gardenia, and Blood Orange",
+                vibe: "Bold, honey-sweet, and unapologetically provocative.",
+                img: "https://images.unsplash.com/photo-1590736704728-f4730bb30770?auto=format&fit=crop&q=80&w=800" 
+            },
+            { 
+                name: "Vanilla Dream", 
+                price: "85.00", 
+                desc: "Scent Profile: Warm Bean, Sugar, and Cream",
+                vibe: "Comforting, sweet, and the perfect base for layering.",
+                img: "https://images.unsplash.com/photo-1616949755610-8c9bbc08f138?auto=format&fit=crop&q=80&w=800" 
+            },
+            { 
+                name: "Polo Blue Inspired", 
+                price: "115.00", 
+                desc: "Scent Profile: Cucumber, Melon, and Suede",
+                vibe: "Fresh, aquatic, and reminds one of a crisp ocean breeze.",
+                img: "https://images.unsplash.com/photo-1551446339-1e5c6f164ec2?auto=format&fit=crop&q=80&w=800" 
+            },
+            { 
+                name: "Baccarat Rouge 540", 
+                price: "210.00", 
+                desc: "Scent Profile: Saffron, Jasmine, and Amberwood",
+                vibe: "Airy, burnt-sugar sweetness; the gold standard of rich scents.",
+                img: "https://images.unsplash.com/photo-1595428774223-ef0486b49e99?auto=format&fit=crop&q=80&w=800" 
+            },
+            { 
+                name: "Dior Sauvage Elixir", 
+                price: "195.00", 
+                desc: "Scent Profile: Cinnamon, Cardamom, and Licorice",
+                vibe: "A spicy, ultra-concentrated, and masculine powerhouse.",
+                img: "https://images.unsplash.com/photo-1512781542348-808f833973b8?auto=format&fit=crop&q=80&w=800" 
+            },
+            { 
+                name: "JPG Le Male", 
+                price: "135.00", 
+                desc: "Scent Profile: Mint, Lavender, and Vanilla",
+                vibe: "A legendary soft-spicy scent that balances freshness with warmth.",
+                img: "https://images.unsplash.com/photo-1603539322541-ad8278257db7?auto=format&fit=crop&q=80&w=800" 
+            },
+            { 
+                name: "Afnan 9pm", 
+                price: "120.00", 
+                desc: "Scent Profile: Apple, Cinnamon, and Vanilla",
+                vibe: "A sweet, loud, and energetic party fragrance.",
+                img: "https://images.unsplash.com/photo-1615396899839-c99c121888b0?auto=format&fit=crop&q=80&w=800" 
+            },
+            { 
+                name: "Creed Aventus", 
+                price: "240.00", 
+                desc: "Scent Profile: Pineapple, Birch, and Musk",
+                vibe: "The king of success scents—smoky, fruity, and sophisticated.",
+                img: "https://images.unsplash.com/photo-1588405748353-0c6cc37943f7?auto=format&fit=crop&q=80&w=800" 
+            },
+            { 
+                name: "Cool Water Man", 
+                price: "105.00", 
+                desc: "Scent Profile: Sea Water, Mint, and Lavender",
+                vibe: "The blueprint for fresh, aquatic blue fragrances.",
+                img: "https://images.unsplash.com/photo-1557827983-012eb6ea8dc1?auto=format&fit=crop&q=80&w=800" 
             }
         ];
 
-        // State
         let cart = 0;
 
-        // Scroll Observer for Animations
-        const observerOptions = { threshold: 0.15 };
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) entry.target.classList.add('visible');
             });
-        }, observerOptions);
+        }, { threshold: 0.1 });
 
         document.querySelectorAll('section').forEach(section => observer.observe(section));
 
-        // Navbar Scroll Effect
         window.addEventListener('scroll', () => {
             const nav = document.getElementById('navbar');
             if (window.scrollY > 50) nav.classList.add('scrolled');
             else nav.classList.remove('scrolled');
         });
 
-        // Render Products
         const productList = document.getElementById('product-list');
         products.forEach(product => {
             const card = document.createElement('div');
@@ -708,6 +711,7 @@
                 <div class="product-info">
                     <h3>${product.name}</h3>
                     <p>${product.desc}</p>
+                    <span class="vibe-text">The Vibe: ${product.vibe}</span>
                     <span class="price">$${product.price}</span>
                     <button class="btn" onclick="addToCart()">Add to Cart</button>
                 </div>
@@ -715,16 +719,12 @@
             productList.appendChild(card);
         });
 
-        // Interactive Functions
         function addToCart() {
             cart++;
             const counter = document.getElementById('cart-count');
             counter.innerText = cart;
-            
-            // Pop effect
             counter.style.transform = "scale(1.5)";
             setTimeout(() => counter.style.transform = "scale(1)", 200);
-            
             showNotification("Added to your collection");
         }
 
@@ -734,18 +734,8 @@
 
         function handleContact(e) {
             e.preventDefault();
-            const btn = e.target.querySelector('button');
-            const originalText = btn.innerText;
-            
-            btn.innerText = "Processing...";
-            btn.disabled = true;
-
-            setTimeout(() => {
-                showNotification("Inquiry sent to the House of Luban");
-                e.target.reset();
-                btn.innerText = originalText;
-                btn.disabled = false;
-            }, 1500);
+            showNotification("Inquiry sent to the House of Luban");
+            e.target.reset();
         }
 
         function showNotification(message) {
@@ -754,9 +744,6 @@
             toast.classList.add('show');
             setTimeout(() => toast.classList.remove('show'), 3000);
         }
-
-        // Re-run icon creation for dynamic content
-        lucide.createIcons();
     </script>
 </body>
 </html>
