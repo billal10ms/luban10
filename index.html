@@ -116,10 +116,34 @@
         .nav-links a:hover { color: var(--gold-primary); }
         .nav-links a:hover::after { width: 100%; }
 
+        /* Icon Actions Styling */
+        .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .nav-icon-link {
+            color: var(--gold-primary);
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            opacity: 0.8;
+            text-decoration: none;
+        }
+
+        .nav-icon-link:hover {
+            opacity: 1;
+            transform: translateY(-2px);
+            filter: drop-shadow(0 0 8px rgba(212, 175, 55, 0.4));
+        }
+
         .cart-icon {
             position: relative;
             cursor: pointer;
             padding: 5px;
+            display: flex;
+            align-items: center;
         }
 
         .cart-count {
@@ -494,6 +518,7 @@
             .contact-container { padding: 2rem; gap: 3rem; }
             #shop { padding: 5rem 5%; }
             .section-title h2 { font-size: 1.8rem; }
+            .nav-actions { gap: 1rem; }
         }
     </style>
 </head>
@@ -510,9 +535,19 @@
             <li><a href="#about">About</a></li>
             <li><a href="#contact">Contact</a></li>
         </ul>
-        <div class="cart-icon" onclick="openCart()">
-            <i data-lucide="shopping-bag" color="#d4af37" stroke-width="1.5"></i>
-            <span class="cart-count" id="cart-count">0</span>
+        
+        <!-- Social Icons Added & Aligned in Navbar -->
+        <div class="nav-actions">
+            <a href="https://www.facebook.com/people/Luban-Fragrance/61586484638332/" target="_blank" class="nav-icon-link" title="Facebook">
+                <i data-lucide="facebook" stroke-width="1.5"></i>
+            </a>
+            <a href="https://www.instagram.com/lubanfragrance/" target="_blank" class="nav-icon-link" title="Instagram">
+                <i data-lucide="instagram" stroke-width="1.5"></i>
+            </a>
+            <div class="cart-icon" onclick="openCart()">
+                <i data-lucide="shopping-bag" color="#d4af37" stroke-width="1.5"></i>
+                <span class="cart-count" id="cart-count">0</span>
+            </div>
         </div>
     </nav>
 
@@ -569,10 +604,9 @@
                     <i data-lucide="mail" size="20" color="#d4af37"></i>
                     <span>lubanfragrance@gmail.com</span>
                 </div>
-                <!-- Social Media Links in Contact -->
                 <div class="contact-item">
                     <i data-lucide="facebook" size="20" color="#d4af37"></i>
-                    <a href="https://www.facebook.com/people/Luban-Fragrance/61586484638332/?sk=directory_contact_info" target="_blank">Luban Fragrance</a>
+                    <a href="https://www.facebook.com/people/Luban-Fragrance/61586484638332/" target="_blank">Luban Fragrance</a>
                 </div>
                 <div class="contact-item">
                     <i data-lucide="instagram" size="20" color="#d4af37"></i>
@@ -594,7 +628,7 @@
 
     <footer>
         <div class="footer-socials">
-            <a href="https://www.facebook.com/people/Luban-Fragrance/61586484638332/?sk=directory_contact_info" target="_blank" title="Facebook">
+            <a href="https://www.facebook.com/people/Luban-Fragrance/61586484638332/" target="_blank" title="Facebook">
                 <i data-lucide="facebook"></i>
             </a>
             <a href="https://www.instagram.com/lubanfragrance/" target="_blank" title="Instagram">
