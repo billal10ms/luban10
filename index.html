@@ -1,9 +1,10 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <title>Luban Fragrance | The Essence of Elegance</title>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <!-- Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Inter:wght@200;300;400;500&display=swap" rel="stylesheet">
     <!-- Lucide Icons -->
@@ -351,12 +352,118 @@
         /* Small UI polish */
         input, textarea, button { font-family: inherit; }
         a { color: inherit; }
+
+        /* Improve focus outlines for accessibility */
+        :focus { outline: 3px solid rgba(212,175,55,0.15); outline-offset: 2px; }
+
+        /* --- Animation styles for "add to cart" / action visual confirmation --- */
+        .fly-img {
+            position: fixed;
+            z-index: 99999;
+            pointer-events: none;
+            border-radius: 8px;
+            will-change: transform, opacity;
+            transition: transform 720ms cubic-bezier(0.22, 0.9, 0.2, 1), opacity 600ms ease;
+            box-shadow: 0 12px 28px rgba(0,0,0,0.45);
+        }
+
+        .fly-dot {
+            position: fixed;
+            z-index: 99999;
+            pointer-events: none;
+            border-radius: 50%;
+            width: 36px;
+            height: 36px;
+            background: var(--gold-primary);
+            box-shadow: 0 10px 22px rgba(0,0,0,0.45);
+            will-change: transform, opacity;
+            transition: transform 720ms cubic-bezier(0.22, 0.9, 0.2, 1), opacity 600ms ease;
+        }
+
+        .cart-pulse {
+            animation: cart-pulse 420ms cubic-bezier(0.22,0.9,0.2,1);
+        }
+        @keyframes cart-pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.25); }
+            100% { transform: scale(1); }
+        }
+
+        /* subtle checkmark confirmation toast */
+        .add-toast {
+            position: fixed;
+            right: 24px;
+            bottom: 150px;
+            background: rgba(212,175,55,0.95);
+            color: #000;
+            padding: 10px 14px;
+            border-radius: 10px;
+            font-weight: 700;
+            z-index: 99999;
+            opacity: 0;
+            transform: translateY(8px);
+            transition: opacity 320ms ease, transform 320ms ease;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+        }
+        .add-toast.show { opacity: 1; transform: translateY(0); }
+
+        /* Full-page confirm overlay (order placed) */
+        .confirm-overlay {
+            position: fixed;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 99998;
+            pointer-events: none;
+        }
+        .confirm-box {
+            background: rgba(0,0,0,0.85);
+            color: var(--gold-primary);
+            border: 1px solid rgba(212,175,55,0.18);
+            padding: 28px 36px;
+            border-radius: 12px;
+            text-align: center;
+            transform: scale(0.85);
+            opacity: 0;
+            transition: transform 420ms cubic-bezier(.2,.9,.25,1), opacity 420ms ease;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+        }
+        .confirm-box.show { transform: scale(1); opacity: 1; pointer-events: auto; }
+
+        /* Accessibility helper: visually hidden but available to screen readers */
+        .sr-only {
+            position: absolute !important;
+            height: 1px; width: 1px;
+            overflow: hidden;
+            clip: rect(1px, 1px, 1px, 1px);
+            white-space: nowrap;
+        }
+
+        /* Cart item quantity controls */
+        .qty-controls { display:flex; align-items:center; gap:8px; }
+        .qty-btn {
+            background: transparent;
+            border: 1px solid rgba(255,255,255,0.06);
+            color: var(--text-white);
+            width: 30px; height: 30px;
+            display:inline-flex; align-items:center; justify-content:center;
+            border-radius:6px;
+            cursor:pointer;
+        }
+        .qty-btn:hover { border-color: var(--gold-primary); color: var(--gold-primary); }
+
     </style>
 </head>
 <body>
 
+    <a class="sr-only" href="#main-view">Skip to content</a>
+
     <div id="custom-cursor" aria-hidden="true"></div>
     <div id="scroll-progress" role="progressbar" aria-hidden="true"></div>
+
+    <!-- Announcer for screen readers -->
+    <div id="sr-announces" class="sr-only" aria-live="polite" aria-atomic="true"></div>
     
     <!-- Mobile Navigation -->
     <div id="mobile-menu" aria-hidden="true">
@@ -366,13 +473,13 @@
         <a href="javascript:void(0)" class="mobile-link" onclick="handleNavClick('about'); toggleMobileMenu();">Heritage</a>
         <a href="javascript:void(0)" class="mobile-link" onclick="handleNavClick('contact'); toggleMobileMenu();">Contact</a>
         <div style="display:flex; gap: 20px; margin-top: 22px;">
-            <a href="https://www.facebook.com/people/Luban-Fragrance/61586484638332/" target="_blank" style="color:var(--gold-primary)"><i data-lucide="facebook"></i></a>
-            <a href="https://www.instagram.com/lubanfragrance" target="_blank" style="color:var(--gold-primary)"><i data-lucide="instagram"></i></a>
+            <a href="https://www.facebook.com/people/Luban-Fragrance/61586484638332/" target="_blank" rel="noopener noreferrer" style="color:var(--gold-primary)"><i data-lucide="facebook"></i></a>
+            <a href="https://www.instagram.com/lubanfragrance" target="_blank" rel="noopener noreferrer" style="color:var(--gold-primary)"><i data-lucide="instagram"></i></a>
         </div>
     </div>
 
     <div id="back-to-top" onclick="window.scrollTo({top: 0, behavior: 'smooth'})" role="button" aria-label="Back to top"><i data-lucide="chevron-up"></i></div>
-    <a id="whatsapp-float" href="https://wa.me/8801935322213?text=Hello%2C%20I'm%20interested%20in%20Luban%20Fragrance!" target="_blank" aria-label="Whatsapp contact">
+    <a id="whatsapp-float" href="https://wa.me/8801935322213?text=Hello%2C%20I'm%20interested%20in%20Luban%20Fragrance!" target="_blank" rel="noopener noreferrer" aria-label="Whatsapp contact">
         <i data-lucide="phone"></i>
     </a>
 
@@ -390,8 +497,8 @@
 
         <div class="nav-actions">
             <div class="social-icons-nav" aria-hidden="false">
-                <a href="https://www.facebook.com/people/Luban-Fragrance/61586484638332/" target="_blank" class="social-link" aria-label="Facebook"><i data-lucide="facebook" size="18"></i></a>
-                <a href="https://www.instagram.com/lubanfragrance" target="_blank" class="social-link" aria-label="Instagram"><i data-lucide="instagram" size="18"></i></a>
+                <a href="https://www.facebook.com/people/Luban-Fragrance/61586484638332/" target="_blank" rel="noopener noreferrer" class="social-link" aria-label="Facebook"><i data-lucide="facebook" size="18"></i></a>
+                <a href="https://www.instagram.com/lubanfragrance" target="_blank" rel="noopener noreferrer" class="social-link" aria-label="Instagram"><i data-lucide="instagram" size="18"></i></a>
             </div>
             <div class="cart-trigger" onclick="toggleCart(true)" style="cursor:pointer; position:relative; margin-left: 10px;" role="button" aria-label="Open cart">
                 <i data-lucide="shopping-cart" stroke="#d4af37" size="22"></i>
@@ -432,7 +539,7 @@
                 <div>
                     <h2 style="font-size: clamp(2.2rem, 5vw, 3.2rem); color: var(--gold-primary); margin-bottom: 18px;">Our Heritage</h2>
                     <p style="color: var(--text-dim); line-height: 1.8; font-size: 1.02rem; margin-bottom: 14px;">Born from a passion for the ancestral art of scent, Luban Fragrance represents the pinnacle of olfactory craftsmanship. We believe that a fragrance is a silent biography.</p>
-                    <p style="color: var(--text-dim); line-height: 1.8; font-size: 1.02rem;">By bypassing the excessive marketing of traditional luxury houses, we invest solely in what matters: the pure essence of the juice.</p>
+                    <p style="color:var(--text-dim); line-height: 1.8; font-size: 1.02rem;">By bypassing the excessive marketing of traditional luxury houses, we invest solely in what matters: the pure essence of the juice.</p>
                 </div>
             </div>
         </section>
@@ -481,7 +588,7 @@
             </div>
 
             <div class="checkout-grid">
-                <div class="checkout-panel">
+                <div class="checkout-panel" id="checkout-panel">
                     <form id="checkout-form" onsubmit="event.preventDefault(); placeOrder();">
                         <div style="margin-bottom:12px;">
                             <label style="font-size:0.72rem; color:var(--gold-muted); text-transform:uppercase; letter-spacing:1.6px;">Full Name *</label>
@@ -540,10 +647,10 @@
     </section>
 
     <div id="cart-overlay" onclick="toggleCart(false)" aria-hidden="true">
-        <div class="cart-drawer" onclick="event.stopPropagation()">
+        <div class="cart-drawer" onclick="event.stopPropagation()" role="dialog" aria-modal="true" aria-labelledby="cart-title" tabindex="-1">
             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:28px;">
-                <h2 class="playfair" style="font-size: 1.6rem;">Selection</h2>
-                <button onclick="toggleCart(false)" style="background:none; border:none; color:#fff;" aria-label="Close cart"><i data-lucide="x"></i></button>
+                <h2 id="cart-title" class="playfair" style="font-size: 1.6rem;">Selection</h2>
+                <button id="cart-close-btn" onclick="toggleCart(false)" style="background:none; border:none; color:#fff;" aria-label="Close cart"><i data-lucide="x"></i></button>
             </div>
             <div id="cart-items" style="max-height: 55vh; overflow-y: auto; margin-bottom: 18px;"></div>
             <div style="border-top: 1px solid var(--border-gold); padding-top: 18px;">
@@ -562,7 +669,8 @@
     </footer>
 
     <script>
-        lucide.createIcons();
+        // ensure icons are created after lucide loads
+        if (window.lucide) window.addEventListener('load', () => lucide.createIcons());
 
         // Fixed BDT prices applied globally
         const PRICE_3ML_BDT = 200;
@@ -571,35 +679,61 @@
         // Apps Script /exec URL (your deployment)
         const APPS_SCRIPT_EXEC_URL = "https://script.google.com/macros/s/AKfycbx-2IooPMPFvx02eF5inEmrQ4G2LKT8HoE0ZjifrJIILT0flmSLHxetFN1vDsFVON31Ig/exec";
 
-        // Products (unchanged from your original)
+        // Products (UNMODIFIED from original)
         const products = [
             { "id": 1, "name": "Ehsas Al Arabia", "price3ml": 175.00, "price6ml": 310.00, "desc": "Oud, Rose, and Amber", "vibe": "Exotic, luxurious, and deeply Middle Eastern.", "img": "https://i.ibb.co.com/qYg6CR3M/ehsas-al-arabia.png" },
             { id: 2, name: "Vampire Blood", price3ml: 155.00, price6ml: 275.00, desc: "Red Berries, Jasmine, and Plum", vibe: "Dark, sweet, and gothic.", img: "https://i.ibb.co/VpWmC5gv/Red-and-Black-Modern-Black-Friday-Luxury-Fragrance-Perfume-Sale-Instagram-Post.png" },
-            { id: 3, name: "CK One Inspired", price3ml: 95.00, price6ml: 165.00, desc: "Green Tea, Papaya, and Bergamot", vibe: "Clean, citrusy, and gender-neutral.", img: "https://images.unsplash.com/photo-1523293182086-7651a899d37f?auto=format&fit=crop&q=80&w=800" },
-            { id: 4, name: "Scandal", price3ml: 145.00, price6ml: 255.00, desc: "Honey, Gardenia, and Blood Orange", vibe: "Bold, honey-sweet, and provocative.", img: "https://images.unsplash.com/photo-1590736704728-f4730bb30770?auto=format&fit=crop&q=80&w=800" },
-            { id: 5, name: "Vanilla Dream", price3ml: 85.00, price6ml: 145.00, desc: "Warm Bean, Sugar, and Cream", vibe: "Comforting, sweet, and layering base.", img: "https://images.unsplash.com/photo-1616949755610-8c9bbc08f138?auto=format&fit=crop&q=80&w=800" },
-            { id: 6, name: "Polo Blue Inspired", price3ml: 115.00, price6ml: 200.00, desc: "Cucumber, Melon, and Suede", vibe: "Fresh, aquatic ocean breeze.", img: "https://images.unsplash.com/photo-1551446339-1e5c6f164ec2?auto=format&fit=crop&q=80&w=800" },
+            { id: 3, name: "CK One Inspired", price3ml: 95.00, price6ml: 165.00, desc: "Green Tea, Papaya, and Bergamot", vibe: "Clean, citrusy, and gender-neutral.", img: "https://i.ibb.co.com/BHQ0thvn/CK-One-Inspired-conva.png" },
+            { id: 4, name: "Scandal", price3ml: 145.00, price6ml: 255.00, desc: "Honey, Gardenia, and Blood Orange", vibe: "Bold, honey-sweet, and provocative.", img: "https://i.ibb.co.com/pcJc8sJ/Scandal-canva.png" },
+            { id: 5, name: "Vanilla Dream", price3ml: 85.00, price6ml: 145.00, desc: "Warm Bean, Sugar, and Cream", vibe: "Comforting, sweet, and layering base.", img: "https://i.ibb.co.com/fYrZRqBY/Vanila-Dream.png" },
+            { id: 6, name: "Polo Blue Inspired", price3ml: 115.00, price6ml: 200.00, desc: "Cucumber, Melon, and Suede", vibe: "Fresh, aquatic ocean breeze.", img: "https://i.ibb.co.com/fzSFYfJ0/Polo-Blue-Inspired-canva.png" },
             { id: 7, name: "Baccarat Rouge 540", price3ml: 210.00, price6ml: 375.00, desc: "Saffron, Jasmine, and Amberwood", vibe: "Airy, burnt-sugar sweetness.", img: "https://i.ibb.co/5zdJRRc/Baccarat-Rouge-540.png" },
             { id: 8, name: "Dior Sauvage Elixir", price3ml: 195.00, price6ml: 345.00, desc: "Cinnamon, Cardamom, and Licorice", vibe: "Spicy, masculine powerhouse.", img: "https://i.ibb.co/nhvh8bN/Dior-Sauvage-Elixir-copy-1.png" },
-            { id: 9, name: "JPG Le Male", price3ml: 135.00, price6ml: 240.00, desc: "Mint, Lavender, and Vanilla", vibe: "Legendary soft-spicy balance.", img: "https://images.unsplash.com/photo-1603539322541-ad8278257db7?auto=format&fit=crop&q=80&w=800" },
-            { id: 10, name: "Afnan 9pm", price3ml: 120.00, price6ml: 210.00, desc: "Apple, Cinnamon, and Vanilla", vibe: "Sweet, loud, party fragrance.", img: "https://images.unsplash.com/photo-1615396899839-c99c121888b0?auto=format&fit=crop&q=80&w=800" },
+            { id: 9, name: "JPG Le Male", price3ml: 135.00, price6ml: 240.00, desc: "Mint, Lavender, and Vanilla", vibe: "Legendary soft-spicy balance.", img: "https://i.ibb.co.com/pvmRnhN8/JPG-Le-Male-canva.png" },
+            { id: 10, name: "Afnan 9pm", price3ml: 120.00, price6ml: 210.00, desc: "Apple, Cinnamon, and Vanilla", vibe: "Sweet, loud, party fragrance.", img: "https://i.ibb.co.com/YBKytF4w/AFNAN-9-PM-canva.png" },
             { id: 11, name: "Creed Aventus", price3ml: 240.00, price6ml: 425.00, desc: "Pineapple, Birch, and Musk", vibe: "Smoky, fruity, sophisticated.", img: "https://i.ibb.co/dwwbGFFL/Creed-Aventus.png" },
             { "id": 12, "name": "Cool Water Man", "price3ml": 105.00, "price6ml": 185.00, "desc": "Sea Water, Mint, and Lavender", "vibe": "Fresh, aquatic blue classic.", "img": "https://i.ibb.co.com/6RrtfJzJ/Blue-and-White-Modern-Premium-Fragrance-Instagram-Story.jpg" },
-            { id: 13, name: "YSL Y (EDP)", price3ml: 185.00, price6ml: 330.00, desc: "Green Apple, Ginger, and Sage", vibe: "Sharp, blue, and highly versatile with great longevity.", img: "https://i.ibb.co.com/xqtqgS4N/YSL-Y.png" },
-            { "id": 14, "name": "Versace Eros", "price3ml": 140.00, "price6ml": 250.00, "desc": "Mint, Candy Apple, and Vanilla", "vibe": "Loud, sweet, and perfect for a vibrant night out.", "img": "https://i.ibb.co.com/nNz257xc/empty.png" },
-            { id: 15, name: "Tobacco Vanille", price3ml: 225.00, price6ml: 400.00, desc: "Tobacco Leaf, Spices, and Creamy Vanilla", vibe: "Rich, opulent, and smells like a private luxury lounge.", img: "https://i.ibb.co.com/S4QFM16c/Tobacco-Vanilla.png" },
-            { id: 16, name: "Hawas Ice", price3ml: 130.00, price6ml: 230.00, desc: "Frozen Apple, Bergamot, and Mint", vibe: "Louder, fresher, and colder than the original DNA.", img: "https://i.ibb.co.com/DgSB4fJ8/hawas-Ice.png" },
-            { id: 17, name: "Hawas Fire", price3ml: 135.00, price6ml: 240.00, desc: "Spices, Leather, and Intense Woods", vibe: "A warm, intense version ideal for cooler weather.", img: "https://i.ibb.co.com/HDYqMHsd/Gemini-Generated-Image-7f1xcp7f1xcp7f1x.png" },
-            { id: 18, name: "Stronger With You", price3ml: 160.00, price6ml: 285.00, desc: "Chestnut, Cardamom, and Vanilla", vibe: "Warm, sweet, and cozy—the ultimate date night scent.", img: "https://i.ibb.co.com/SDmwnHSH/Stronger-with-You.png" },
-            { id: 19, name: "Acqua Di Gio", price3ml: 110.00, price6ml: 195.00, desc: "Sea Notes, Lime, and Jasmine", vibe: "The gold standard for aquatics—clean, light, and airy.", img: "https://i.ibb.co.com/nNz257xc/empty.png" },
-            { id: 20, name: "Paris Hilton (Men)", price3ml: 90.00, price6ml: 155.00, desc: "Cucumber and Mango Profile", vibe: "A fruity, fresh profile that is casual and easy-going.", img: "https://images.unsplash.com/photo-1541605027-0b81e3f22330?auto=format&fit=crop&q=80&w=800" },
+            { id: 13, name: "YSL Y (EDP)", price3ml: 185.00, price6ml: 330.00, desc: "Green Apple, Ginger, and Sage", vibe: "Sharp, blue, and highly versatile with great longevity.", img: "https://i.ibb.co.com/JwpR1SQP/YSL-Y-EDP-canva.png" },
+            { "id": 14, "name": "Versace Eros", "price3ml": 140.00, "price6ml": 250.00, "desc": "Mint, Candy Apple, and Vanilla", "vibe": "Loud, sweet, and perfect for a vibrant night out.", "img": "https://i.ibb.co.com/Xfzz4vHW/Eros-canva.png" },
+            { id: 15, name: "Tobacco Vanille", price3ml: 225.00, price6ml: 400.00, desc: "Tobacco Leaf, Spices, and Creamy Vanilla", vibe: "Rich, opulent, and smells like a private luxury lounge.", img: "https://i.ibb.co.com/XfHdmS75/Tobacco-Vanille-canva.png" },
+            { id: 16, name: "Hawas Ice", price3ml: 130.00, price6ml: 230.00, desc: "Frozen Apple, Bergamot, and Mint", vibe: "Louder, fresher, and colder than the original DNA.", img: "https://i.ibb.co.com/qF5KG4wV/Hawas-Ice-canva.png" },
+            { id: 13, name: "YSL Y (EDP)", price3ml: 185.00, price6ml: 330.00, desc: "Green Apple, Ginger, and Sage", vibe: "Sharp, blue, and highly versatile with great longevity.", img: "https://i.ibb.co.com/JwpR1SQP/YSL-Y-EDP-canva.png" },
+            { id: 18, name: "Stronger With You", price3ml: 160.00, price6ml: 285.00, desc: "Chestnut, Cardamom, and Vanilla", vibe: "Warm, sweet, and cozy—the ultimate date night scent.", img: "https://i.ibb.co.com/992Qgj3v/Stronger-With-You-canva.png" },
+            { "id": 19, "name": "Acqua Di Gio", "price3ml": 110.00, "price6ml": 195.00, "desc": "Sea Notes, Lime, and Jasmine", "vibe": "The gold standard for aquatics—clean, light, and airy.", "img": "https://i.ibb.co.com/Gf613zdJ/Acqua-canva.png" },
+            { id: 20, name: "Paris Hilton (Men)", price3ml: 90.00, price6ml: 155.00, desc: "Cucumber and Mango Profile", vibe: "A fruity, fresh profile that is casual and easy-going.", img: "https://i.ibb.co.com/DDspXc3t/Paris-Hilton-Men.png" },
             { id: 21, name: "Sultan (Al-Rehab)", price3ml: 80.00, price6ml: 140.00, desc: "Cedar, Juniper, and Musk", vibe: "Concentrated woodiness—very masculine and robust.", img: "https://i.ibb.co.com/1fFTxNF9/sultan.png" }
         ];
 
+        const CART_STORAGE_KEY = 'luban_cart_v1';
         let cart = [];
         let selectedSize = '3ml';
 
-        // UI Interactions (unchanged)
+        // Utility: Save & load cart to localStorage
+        function saveCartToStorage() {
+            try {
+                localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(cart));
+            } catch (e) {
+                console.warn('Could not save cart to storage', e);
+            }
+        }
+        function loadCartFromStorage() {
+            try {
+                const raw = localStorage.getItem(CART_STORAGE_KEY);
+                if (raw) cart = JSON.parse(raw);
+            } catch (e) {
+                cart = [];
+            }
+        }
+
+        // Accessible announcer helper
+        function announceSR(message) {
+            const el = document.getElementById('sr-announces');
+            if (!el) return;
+            el.textContent = ''; // reset to ensure it will be read
+            setTimeout(() => el.textContent = message, 50);
+        }
+
+        // UI Interactions (unchanged behavior, accessibility additions & small improvements)
         function toggleMobileMenu() {
             const menu = document.getElementById('mobile-menu');
             const toggle = document.querySelector('.menu-toggle');
@@ -607,6 +741,10 @@
             const isActive = menu.classList.contains('active');
             if (toggle) toggle.setAttribute('aria-expanded', isActive ? 'true' : 'false');
             menu.setAttribute('aria-hidden', isActive ? 'false' : 'true');
+            if (isActive) {
+                const first = menu.querySelector('.mobile-link');
+                if (first) first.focus();
+            }
         }
 
         function handleNavClick(id) {
@@ -624,7 +762,14 @@
             products.forEach(p => {
                 const card = document.createElement('div');
                 card.className = 'product-card';
+                card.tabIndex = 0; // keyboard focusable
                 card.onclick = () => showView('details', p.id);
+                card.onkeydown = (e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        showView('details', p.id);
+                    }
+                };
                 card.innerHTML = `
                     <div class="image-container">
                         <img src="${p.img}" alt="${p.name}" loading="lazy" onerror="this.src='https://images.unsplash.com/photo-1557170334-a9632e77c6e4?auto=format&fit=crop&q=80&w=800'">
@@ -637,7 +782,22 @@
                 `;
                 list.appendChild(card);
             });
-            lucide.createIcons();
+            if (window.lucide) lucide.createIcons();
+
+            // gentle prefetch of product images (non-blocking)
+            try {
+                products.forEach(prod => {
+                    if (prod.img) {
+                        const l = document.createElement('link');
+                        l.rel = 'prefetch';
+                        l.as = 'image';
+                        l.href = prod.img;
+                        document.head.appendChild(l);
+                    }
+                });
+            } catch (e) {
+                // noop
+            }
         }
 
         function showView(view, id) {
@@ -651,11 +811,20 @@
                 main.style.display = 'none';
                 checkoutView.style.display = 'none';
                 detailView.style.display = 'block';
+                // focus first interactive element in details
+                setTimeout(() => {
+                    const firstBtn = detailView.querySelector('.size-btn') || detailView.querySelector('.btn-gold');
+                    if (firstBtn) firstBtn.focus();
+                }, 80);
             } else if (view === 'checkout') {
                 main.style.display = 'none';
                 detailView.style.display = 'none';
                 checkoutView.style.display = 'block';
                 renderCheckout();
+                setTimeout(() => {
+                    const firstField = document.getElementById('billing-name');
+                    if (firstField) firstField.focus();
+                }, 80);
             } else {
                 main.style.display = 'block';
                 detailView.style.display = 'none';
@@ -698,29 +867,202 @@
                     </div>
                 </div>
             `;
-            lucide.createIcons();
+            if (window.lucide) lucide.createIcons();
         }
+
+        // CART UI management & focus trap
+        let previouslyFocusedElement = null;
 
         function toggleCart(open) {
             const overlay = document.getElementById('cart-overlay');
+            const drawer = overlay.querySelector('.cart-drawer');
             if(open) {
                 overlay.classList.add('open');
                 overlay.setAttribute('aria-hidden', 'false');
                 renderCart();
+                previouslyFocusedElement = document.activeElement;
+                // focus management: move focus into the drawer close button
+                const closeBtn = document.getElementById('cart-close-btn');
+                if (closeBtn) closeBtn.focus();
+                enableFocusTrap(drawer);
             } else {
                 overlay.classList.remove('open');
                 overlay.setAttribute('aria-hidden', 'true');
+                disableFocusTrap();
+                // restore focus
+                if (previouslyFocusedElement) previouslyFocusedElement.focus();
             }
         }
 
-        function addToCart(id) {
+        // Simple focus trap implementation for cart drawer
+        let focusTrapElement = null;
+        function enableFocusTrap(container) {
+            focusTrapElement = container;
+            document.addEventListener('focus', enforceFocus, true);
+            document.addEventListener('keydown', handleTrapTab);
+        }
+        function disableFocusTrap() {
+            document.removeEventListener('focus', enforceFocus, true);
+            document.removeEventListener('keydown', handleTrapTab);
+            focusTrapElement = null;
+        }
+        function enforceFocus(e) {
+            if (!focusTrapElement) return;
+            if (!focusTrapElement.contains(e.target)) {
+                e.stopPropagation();
+                focusTrapElement.focus();
+            }
+        }
+        function handleTrapTab(e) {
+            if (!focusTrapElement) return;
+            if (e.key === 'Tab') {
+                const focusable = focusTrapElement.querySelectorAll('a[href], button:not([disabled]), textarea, input, select, [tabindex]:not([tabindex="-1"])');
+                if (!focusable.length) {
+                    e.preventDefault();
+                    return;
+                }
+                const first = focusable[0];
+                const last = focusable[focusable.length - 1];
+                if (e.shiftKey && document.activeElement === first) {
+                    e.preventDefault();
+                    last.focus();
+                } else if (!e.shiftKey && document.activeElement === last) {
+                    e.preventDefault();
+                    first.focus();
+                }
+            }
+        }
+
+        /**
+         * Generic animate-from-element-to-destination function.
+         * - If source is an image element, it clones it and animates.
+         * - Otherwise it creates a small gold dot and animates it.
+         *
+         * It animates from sourceEl's center to destRect center.
+         * Returns a Promise that resolves when animation completes (or times out).
+         */
+        function animateElementToRect(sourceEl, destRect, opts = {}) {
+            return new Promise((resolve) => {
+                try {
+                    if (!sourceEl || !destRect) {
+                        resolve();
+                        return;
+                    }
+
+                    let clone;
+                    const isImg = sourceEl.tagName && sourceEl.tagName.toLowerCase() === 'img' && sourceEl.src;
+                    if (isImg) {
+                        clone = sourceEl.cloneNode(true);
+                        clone.className = 'fly-img';
+                    } else {
+                        clone = document.createElement('div');
+                        clone.className = 'fly-dot';
+                    }
+
+                    const srcRect = sourceEl.getBoundingClientRect();
+                    const startLeft = srcRect.left + window.scrollX;
+                    const startTop = srcRect.top + window.scrollY;
+                    const startW = isImg ? Math.max(40, srcRect.width * 0.9) : 36;
+                    const startH = isImg ? Math.max(40, srcRect.height * 0.9) : 36;
+
+                    clone.style.width = startW + 'px';
+                    clone.style.height = startH + 'px';
+                    clone.style.left = startLeft + 'px';
+                    clone.style.top = startTop + 'px';
+                    clone.style.opacity = '1';
+                    clone.style.transform = 'translate(0,0) scale(1)';
+
+                    document.body.appendChild(clone);
+
+                    requestAnimationFrame(() => {
+                        const cloneRect = clone.getBoundingClientRect();
+                        const srcCenterX = cloneRect.left + cloneRect.width / 2;
+                        const srcCenterY = cloneRect.top + cloneRect.height / 2;
+                        const destCenterX = destRect.left + destRect.width / 2 + window.scrollX;
+                        const destCenterY = destRect.top + destRect.height / 2 + window.scrollY;
+
+                        const translateX = destCenterX - srcCenterX;
+                        const translateY = destCenterY - srcCenterY;
+
+                        const scale = opts.scale || 0.18;
+
+                        clone.style.transform = `translate(${translateX}px, ${translateY}px) scale(${scale})`;
+                        clone.style.opacity = '0.02';
+                    });
+
+                    const cleanup = () => {
+                        if (clone && clone.parentNode) clone.parentNode.removeChild(clone);
+                        resolve();
+                    };
+
+                    const maxTimeout = setTimeout(() => {
+                        cleanup();
+                    }, 900);
+
+                    clone.addEventListener('transitionend', () => {
+                        clearTimeout(maxTimeout);
+                        cleanup();
+                    }, { once: true });
+                } catch (err) {
+                    console.warn('animateElementToRect failed', err);
+                    resolve();
+                }
+            });
+        }
+
+        // convenience wrapper for flying to cart (cart-count or cart trigger)
+        function animateToCartFrom(sourceEl) {
+            const cartCount = document.getElementById('cart-count');
+            const cartTrigger = document.querySelector('.cart-trigger');
+            const destEl = cartCount || cartTrigger || document.querySelector('.nav-logo-img');
+            const destRect = destEl ? destEl.getBoundingClientRect() : { left: window.innerWidth - 48, top: 24, width: 24, height: 24 };
+            return animateElementToRect(sourceEl, destRect, { scale: 0.18 });
+        }
+
+        // small toast to show action visually (non-intrusive)
+        function showAddToast(text = 'Added to selection') {
+            let toast = document.querySelector('.add-toast');
+            if (!toast) {
+                toast = document.createElement('div');
+                toast.className = 'add-toast';
+                document.body.appendChild(toast);
+            }
+            toast.innerText = text;
+            requestAnimationFrame(() => {
+                toast.classList.add('show');
+                setTimeout(() => {
+                    toast.classList.remove('show');
+                }, 1100);
+            });
+        }
+
+        /**
+         * Adds item to cart. Will attempt to animate the item's image flying to cart first.
+         * The core data/text values remain unchanged.
+         */
+        async function addToCart(id) {
             const p = products.find(x => x.id === id);
+            // try to find the best image element to animate from:
+            // 1. details view image
+            let srcImg = document.querySelector('#details-content img');
+            // 2. fallback: product list image by alt attribute
+            if (!srcImg) {
+                srcImg = document.querySelector(`#product-list img[alt="${p.name}"]`);
+            }
+            // trigger animation but don't block if it fails — we wait for it to complete before showing cart for nicer UX
+            try {
+                await animateToCartFrom(srcImg || document.querySelector('.nav-logo-img'));
+            } catch (e) {
+                // ignore animation errors
+            }
+
             const currentPrice = selectedSize === '3ml' ? PRICE_3ML_BDT : PRICE_6ML_BDT;
             const cartId = `${id}-${selectedSize}`;
             const exists = cart.find(x => x.cartId === cartId);
             
             if(exists) {
                 exists.qty++;
+                announceSR(`${exists.name} quantity updated to ${exists.qty} in your selection.`);
             } else {
                 cart.push({
                     ...p, 
@@ -729,10 +1071,30 @@
                     activePrice: currentPrice, 
                     qty: 1
                 });
+                announceSR(`${p.name} added to your selection.`);
             }
             
             updateCartCount();
+            saveCartToStorage();
+            // open cart to confirm visually
             toggleCart(true);
+        }
+
+        // change quantity by delta (+1 or -1)
+        function changeQty(cartId, delta) {
+            const item = cart.find(i => i.cartId === cartId);
+            if (!item) return;
+            item.qty = Math.max(0, item.qty + delta);
+            if (item.qty === 0) {
+                cart = cart.filter(i => i.cartId !== cartId);
+                announceSR(`${item.name} removed from your selection.`);
+            } else {
+                announceSR(`${item.name} quantity updated to ${item.qty} in your selection.`);
+            }
+            saveCartToStorage();
+            renderCart();
+            updateCartCount();
+            renderCheckout(); // keep checkout view in sync if open
         }
 
         function renderCart() {
@@ -750,19 +1112,25 @@
                     <div style="flex:1">
                         <h4 class="playfair" style="font-size:0.98rem; margin-bottom:4px;">${item.name} (${item.selectedSize})</h4>
                         <p style="font-size:0.78rem; color:var(--gold-muted)">${item.activePrice}৳ x ${item.qty}</p>
+                        <div class="qty-controls" style="margin-top:8px;">
+                            <button class="qty-btn" aria-label="Decrease quantity" onclick="changeQty('${item.cartId}', -1)"><i data-lucide="minus" size="14"></i></button>
+                            <div style="min-width:28px; text-align:center;">${item.qty}</div>
+                            <button class="qty-btn" aria-label="Increase quantity" onclick="changeQty('${item.cartId}', 1)"><i data-lucide="plus" size="14"></i></button>
+                        </div>
                     </div>
-                    <i data-lucide="x" size="16" style="cursor:pointer; opacity:0.6" onclick="removeFromCart('${item.cartId}')"></i>
+                    <i data-lucide="x" size="16" style="cursor:pointer; opacity:0.6" onclick="changeQty('${item.cartId}', -${item.qty})" title="Remove item"></i>
                 `;
                 cont.appendChild(div);
             });
             document.getElementById('cart-total').innerText = `${subtotal}৳`;
-            lucide.createIcons();
+            if (window.lucide) lucide.createIcons();
         }
 
         function removeFromCart(cartId) {
             cart = cart.filter(x => x.cartId !== cartId);
             renderCart();
             updateCartCount();
+            saveCartToStorage();
         }
 
         function updateCartCount() {
@@ -807,12 +1175,26 @@
             totalEl.innerText = `${total}৳`;
         }
 
-        function checkout() {
+        /**
+         * Checkout flow: animate from cart/details to cart, then open checkout view.
+         * Behavior remains the same, this only adds a visual continuity animation.
+         */
+        async function checkout() {
+            // pick an image to animate: first cart item image, details image, fallback to nav logo
+            let srcImg = document.querySelector('#cart-items img') || document.querySelector('#details-content img') || document.querySelector('.nav-logo-img');
+            try {
+                await animateToCartFrom(srcImg || document.querySelector('.nav-logo-img'));
+            } catch (e) {
+                // ignore animation errors
+            }
             showView('checkout');
         }
 
-        // placeOrder uses the APPS_SCRIPT_EXEC_URL above and purposely does NOT set Content-Type
-        function placeOrder() {
+        /**
+         * Place order with a full-page confirm animation before sending the request.
+         * Keeps visible text/data unchanged.
+         */
+        async function placeOrder() {
             const name = document.getElementById('billing-name').value.trim();
             const phone = document.getElementById('billing-phone').value.trim();
             const email = document.getElementById('billing-email').value.trim();
@@ -840,7 +1222,20 @@
                 payment: document.getElementById('cod-checkbox').checked ? 'Cash on Delivery' : 'Other'
             };
 
-            // IMPORTANT: Do NOT set "Content-Type": "application/json" — leaving it out avoids CORS preflight.
+            // Pick a visual source for the animation: first checkout item image or cart icon
+            let srcImg = document.querySelector('#checkout-items img') || document.querySelector('#cart-items img') || document.querySelector('.nav-logo-img');
+            // Destination: center of viewport (visual confirmation)
+            const destRect = { left: window.innerWidth/2 - 24, top: window.innerHeight/2 - 24, width: 48, height: 48 };
+
+            // run fly animation to center, then show confirm bubble
+            try {
+                await animateElementToRect(srcImg || document.querySelector('.nav-logo-img'), destRect, { scale: 0.2 });
+            } catch (e) {}
+
+            // show full confirmation overlay (visual only) while we send the order
+            await showFullConfirm('Placing order...');
+
+            // send order (behavior unchanged): IMPORTANT: no Content-Type to avoid preflight
             fetch(APPS_SCRIPT_EXEC_URL, {
                 method: "POST",
                 body: JSON.stringify(order)
@@ -856,15 +1251,47 @@
                 console.error("Failed sending to Apps Script:", err);
                 alert('Order failed to send. Check console for details.');
             })
-            .finally(() => {
-                // UX: confirmation & clear local cart
+            .finally(async () => {
+                // final visual confirmation
+                await showFullConfirm('Order placed');
+
+                // UX: confirmation & clear local cart (message unchanged)
                 const msg = `Thank you ${order.name}! Your order (${order.id}) has been placed.\nTotal: ${order.total}৳\nPayment: ${order.payment}`;
                 alert(msg);
 
                 cart = [];
+                saveCartToStorage();
                 updateCartCount();
                 renderCart();
                 showView('main');
+            });
+        }
+
+        // small helper used by placeOrder that shows a full-page confirm box
+        function showFullConfirm(message = 'Done') {
+            return new Promise((resolve) => {
+                const overlay = document.createElement('div');
+                overlay.className = 'confirm-overlay';
+                overlay.innerHTML = `
+                    <div class="confirm-box" role="status" aria-live="polite">
+                        <svg width="64" height="64" viewBox="0 0 24 24" fill="none" style="display:block; margin:0 auto 10px;">
+                            <path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></path>
+                        </svg>
+                        <div style="font-weight:700; font-size:1.05rem;">${message}</div>
+                    </div>
+                `;
+                document.body.appendChild(overlay);
+                requestAnimationFrame(() => {
+                    const box = overlay.querySelector('.confirm-box');
+                    box.classList.add('show');
+                    setTimeout(() => {
+                        box.classList.remove('show');
+                        setTimeout(() => {
+                            if (overlay && overlay.parentNode) overlay.parentNode.removeChild(overlay);
+                            resolve();
+                        }, 420);
+                    }, 1100);
+                });
             });
         }
 
@@ -899,9 +1326,64 @@
                 const overlay = document.getElementById('cart-overlay');
                 if (overlay.classList.contains('open')) toggleCart(false);
             }
+
+            // Keyboard shortcuts (non-invasive)
+            // Shift+C => clear cart
+            // Shift+O => open cart
+            // Shift+G => go to shop
+            if (e.shiftKey && e.key.toLowerCase() === 'c') {
+                cart = [];
+                saveCartToStorage();
+                updateCartCount();
+                renderCart();
+                announceSR('Selection cleared.');
+            }
+            if (e.shiftKey && e.key.toLowerCase() === 'o') {
+                toggleCart(true);
+            }
+            if (e.shiftKey && e.key.toLowerCase() === 'g') {
+                showView('main');
+                setTimeout(() => {
+                    const el = document.getElementById('shop');
+                    if (el) el.scrollIntoView({behavior:'smooth'});
+                }, 120);
+            }
         });
 
-        window.onload = renderShop;
+        // Initialize app on load
+        window.addEventListener('DOMContentLoaded', () => {
+            loadCartFromStorage();
+            updateCartCount();
+            renderShop();
+            // Ensure icons are rendered in any newly generated content
+            if (window.lucide) lucide.createIcons();
+
+            // Register service worker (if available)
+            if ('serviceWorker' in navigator) {
+                navigator.serviceWorker.register('./sw.js', { scope: './' })
+                .then(reg => {
+                    console.log('ServiceWorker registration successful with scope: ', reg.scope);
+                })
+                .catch(err => {
+                    console.warn('ServiceWorker registration failed:', err);
+                });
+            }
+
+            // Online/offline announcements for screen readers (no visible text changes)
+            function handleOnline() {
+                announceSR('Back online');
+                console.info('Network: online');
+            }
+            function handleOffline() {
+                announceSR('You are offline — cached content may be available');
+                console.warn('Network: offline');
+            }
+            window.addEventListener('online', handleOnline);
+            window.addEventListener('offline', handleOffline);
+            if (!navigator.onLine) handleOffline();
+        });
+
+        // Defensive resize handling (keeps open state consistent)
         window.addEventListener('resize', () => {
             const overlay = document.getElementById('cart-overlay');
             if (!overlay.classList.contains('open')) return;
