@@ -2782,29 +2782,22 @@
             document.body.appendChild(overlay);
             setTimeout(() => overlay.classList.add('show'), 10);
 
-            // Construct WhatsApp Message
-            let itemsText = cart.map(item => `- ${item.name} (${item.selectedSize}) x ${item.qty} = ${item.activePrice * item.qty}৳`).join('%0A');
-            const whatsappNumber = "8801935322213";
-            const waText = `*New Order: ${orderId}*%0A%0A*Customer Details:*%0A- Name: ${name}%0A- Phone: ${phone}%0A- Email: ${email}%0A- Destination: ${city}, ${address}%0A%0A*Items:*%0A${itemsText}%0A%0A*Total Amount: ${total}*%0A%0A_Thank you for choosing Luban Fragrance._`;
-            const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${waText}`;
-
             try {
                 // Log to Google Sheets (optional but kept for robustness)
                 fetch(APPS_SCRIPT_EXEC_URL, { method: "POST", body: JSON.stringify(order) }).catch(e => console.error("Logging failed", e));
             } catch (err) { console.error("Order logging failed", err); }
 
             setTimeout(() => {
-                overlay.querySelector('.confirm-box').innerHTML = `<i data-lucide="check" size="72" color="#cba35c" style="margin-bottom:20px;"></i><h2 style="margin-top:20px; letter-spacing:10px;">SECURED</h2><p style="margin-top:15px; color:var(--gold-muted); text-transform:uppercase; letter-spacing:4px; font-size:0.7rem;">Your order ${orderId} is being prepared.</p><p style="margin-top:10px; font-size:0.6rem; color:var(--gold-primary);">Redirecting to WhatsApp for confirmation...</p>`;
+                overlay.querySelector('.confirm-box').innerHTML = `<i data-lucide="check" size="72" color="#cba35c" style="margin-bottom:20px;"></i><h2 style="margin-top:20px; letter-spacing:10px;">SECURED</h2><p style="margin-top:15px; color:var(--gold-muted); text-transform:uppercase; letter-spacing:4px; font-size:0.7rem;">Your order ${orderId} is being prepared.</p><p style="margin-top:10px; font-size:0.6rem; color:var(--gold-primary);">Thank you for your purchase.</p>`;
                 if (window.lucide) lucide.createIcons();
                 
                 setTimeout(() => {
-                    window.open(whatsappUrl, '_blank');
                     cart = [];
                     saveCartToStorage();
                     updateCartCount();
                     showView('main');
                     overlay.remove();
-                    alert(`Thank you ${name}. Your order has been placed. Please confirm on WhatsApp if the window didn't open automatically.`);
+                    alert(`Thank you ${name}. Your order ${orderId} has been successfully placed.`);
                 }, 2500);
             }, 1800);
         }
